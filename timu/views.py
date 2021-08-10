@@ -41,12 +41,12 @@ def add_timu(request):
                 rowList = csv.reader(f)
                 rowList = list(rowList)
 
-        print(rowList)
-        for row in rowList:
-            print(row)
+        # print(rowList)
+        # for row in rowList:
+        #     print(row)
 
         row0 = rowList[0]
-        print(row0)
+        # print(row0)
         columlist = ['案例标题','事发日期','事发地点','Subject','rightAnswer','wrongAnswer1','wrongAnswer2','wrongAnswer3']
 
         if row0 == columlist:
