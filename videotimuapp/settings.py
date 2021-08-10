@@ -82,7 +82,7 @@ DATABASES = {
            # 'read_default_file': 'mysql.cnf',
         #},
         'NAME': 'timu',
-        'HOST': 'localhost',  #这里必须是主机对外地址(mysql 再容器里)
+        'HOST': '172.16.233.48',  #这里必须是主机对外地址(mysql 再容器里)
         'PORT': '33066',
         'USER': 'root',
         'PASSWORD':'961227',
