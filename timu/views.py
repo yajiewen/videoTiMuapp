@@ -3,7 +3,8 @@ from django.http import JsonResponse, response
 from timu import models
 import uuid
 import timu
-import csv
+import pandas as ps
+
 
 # Create your views here.
 """
@@ -31,29 +32,32 @@ def add_timu(request):
         #获取文件
         Subject = request.FILES.get('Subject')
         # 保存文件
-        with open('Subject.csv','wb') as f:
+        with open('Subject.xlsx','wb') as f:
             for chunk in Subject.chunks():
                 f.write(chunk)
 
         #读取csv文件
         rowList = []
-        with open('Subject.csv', 'r',encoding='utf-8-sig') as f:
-                rowList = csv.reader(f)
-                rowList = list(rowList)
+        # with open('Subject.csv', 'r',encoding='gbk') as f:
+        #         rowList = csv.reader(f)
+        #         rowList = list(rowList)
+        df = ps.read_excel('Subject.xlsx',header=None)
+
+        rowList=df.values
 
         # print(rowList)
         # for row in rowList:
         #     print(row)
 
         row0 = rowList[0]
-        # print(row0)
-        columlist = ['案例标题','事发日期','事发地点','Subject','rightAnswer','wrongAnswer1','wrongAnswer2','wrongAnswer3']
+        print(row0)
+        columlist = ['案例标题','Subject','rightAnswer1','wrongAnswer1','wrongAnswer2','wrongAnswer3']
 
-        if row0 == columlist:
+        if all(row0 == columlist):
             #进行文件检测
             for index in range(1,len(rowList)):
                 eachrow = rowList[index]
-                if '(   )' not in eachrow[3] or '' in eachrow: #看有么有空列和(   )是不是再题干中
+                if '(   )' not in eachrow[1]: #看有么有空列和(   )是不是再题干中
                     response_data['wrongRow'].append(str(index)) # 添加错误行
             
             if response_data['wrongRow']: #若不空说明文件有错
@@ -62,14 +66,16 @@ def add_timu(request):
                 # 没错的录入文件
                 for index in range(1,len(rowList)):
                     eachrow = rowList[index]
-                    if not models.Table.objects.filter(Subject = eachrow[3].strip()).exists(): #题目不存在才加入
+                    if not models.Table.objects.filter(
+                        anliuuid = uuid.uuid3(uuid.NAMESPACE_DNS, eachrow[0].strip()), 
+                        Subject = eachrow[1].strip()).exists(): #题目不存在才加入
                         models.Table.objects.create(
-                            anliuuid = str(uuid.uuid3(uuid.NAMESPACE_DNS, eachrow[0].strip() + eachrow[1].strip() + eachrow[2].strip())),
-                            Subject = eachrow[3].strip(),
-                            rightAnswer = eachrow[4].strip(),
-                            wrongAnswer1 = eachrow[5].strip(),
-                            wrongAnswer2 = eachrow[6].strip(),
-                            wrongAnswer3 = eachrow[7].strip(),
+                            anliuuid = str( uuid.uuid3(uuid.NAMESPACE_DNS, eachrow[0].strip()) ),
+                            Subject = str(eachrow[1]).strip(),
+                            rightAnswer = str(eachrow[2]).strip(),
+                            wrongAnswer1 = str(eachrow[3]).strip(),
+                            wrongAnswer2 = str(eachrow[4]).strip(),
+                            wrongAnswer3 = str(eachrow[5]).strip(),
                             )
                         response_data['add_num'] += 1
                 response_data['is_add'] = 'yes'
