@@ -53,7 +53,7 @@ def add_timu(request):
         print(row0)
         columlist = ['案例标题','Subject','rightAnswer1','wrongAnswer1','wrongAnswer2','wrongAnswer3']
 
-        if all(row0 == columlist):
+        if len(row0) == len(columlist) and all(row0 == columlist):
             #进行文件检测
             for index in range(1,len(rowList)):
                 eachrow = rowList[index]
