@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '6k0653$je5@g7(ko4h(d2^btfybqyz!xgd6=y4#xr0%g*-ty*i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -83,6 +83,7 @@ DATABASES = {
         #},
         'NAME': 'timu',
         'HOST': '172.16.233.48',  #这里必须是主机对外地址(mysql 再容器里)
+        #'HOST': 'localhost',
         'PORT': '33066',
         'USER': 'root',
         'PASSWORD':'961227',
