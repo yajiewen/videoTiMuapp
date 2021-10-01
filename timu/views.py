@@ -241,7 +241,7 @@ def detect_timu(request):
         titles = []
         for index in range(2,len(rowList)):
             eachrow = rowList[index]
-            title = video_file_name.strip()+str(eachrow[0])+ eachrow[1].strip()
+            title = str(video_file_name).strip()+str(eachrow[0]).strip()+ str(eachrow[1]).strip()
             # print(title)
             titles.append(title)
 
