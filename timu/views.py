@@ -62,7 +62,7 @@ def add_timu(request):
                 for index in range(1,len(rowList)):
                     eachrow = rowList[index]
                     if not models.Table.objects.filter(
-                        anliuuid = uuid.uuid3(uuid.NAMESPACE_DNS, eachrow[0].strip()), 
+                        anliuuid = uuid.uuid3(uuid.NAMESPACE_DNS, str(eachrow[0]).strip()), 
                         Subject = eachrow[1].strip(),
                         rightAnswer = str(eachrow[2]).strip(),
                         wrongAnswer1 = str(eachrow[3]).strip(),
@@ -70,7 +70,7 @@ def add_timu(request):
                         wrongAnswer3 = str(eachrow[5]).strip(),
                         ).exists(): #题目不存在才加入
                         models.Table.objects.create(
-                            anliuuid = str( uuid.uuid3(uuid.NAMESPACE_DNS, eachrow[0].strip()) ),
+                            anliuuid = str( uuid.uuid3(uuid.NAMESPACE_DNS, str(eachrow[0]).strip()) ),
                             Subject = str(eachrow[1]).strip(),
                             rightAnswer = str(eachrow[2]).strip(),
                             wrongAnswer1 = str(eachrow[3]).strip(),
